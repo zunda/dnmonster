@@ -4,7 +4,7 @@ var restify = require('restify');
 var monster = require('./monsterid.js');
 
 /*
- * TODO: bit more docs, run through checker
+ * TODO: bit more docs
  *       figure out debug and live-reloading
  *       tests (pretty easy, check get same binary for same string, check
  *       short strings, invalid URLs, sizes)
@@ -41,7 +41,9 @@ var server = restify.createServer({
             //Just send the bytes - should be a Buffer
             return body;
         }
-    }
+    },
+    name: "dnmonster"
+
 });
 
 server.use(restify.queryParser());
