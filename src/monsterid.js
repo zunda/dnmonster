@@ -1,15 +1,12 @@
-
-var md5m = require('./md5.js')
+var seedrandom = require('seedrandom')
 var Canvas = require('canvas')
-    exports.getAvatar = function(string, width, height, theme) {
+    exports.getAvatar = function(seed, width, height, theme) {
         //check width and height
         theme = typeof theme !== 'undefined' ? theme : 'default';
-        var md5 = md5m.md5(string);
-        var seed = parseInt(md5.substr(0, 6), 16);
-        var MonsterId = Math;
 
-        // Create seed.
-        //MonsterId.seedrandom(seed);
+        // Seed RNG. 
+        // WARNING: Hashing is left to caller
+        var rng = seedrandom(seed);
 
         var widthHeight = Math.min(width, height);
         widthHeight = Math.max(widthHeight, 12);
@@ -17,12 +14,12 @@ var Canvas = require('canvas')
 
         // Avatar random parts.
         var parts = {
-            legs : availableParts[theme].legs[Math.floor(MonsterId.random() * availableParts[theme].legs.length)],
-            hair : availableParts[theme].hair[Math.floor(MonsterId.random() * availableParts[theme].hair.length)],
-            arms : availableParts[theme].arms[Math.floor(MonsterId.random() * availableParts[theme].arms.length)],
-            body : availableParts[theme].body[Math.floor(MonsterId.random() * availableParts[theme].body.length)],
-            eyes : availableParts[theme].eyes[Math.floor(MonsterId.random() * availableParts[theme].eyes.length)],
-            mouth: availableParts[theme].mouth[Math.floor(MonsterId.random() * availableParts[theme].mouth.length)]
+            legs : availableParts[theme].legs[Math.floor(rng() * availableParts[theme].legs.length)],
+            hair : availableParts[theme].hair[Math.floor(rng() * availableParts[theme].hair.length)],
+            arms : availableParts[theme].arms[Math.floor(rng() * availableParts[theme].arms.length)],
+            body : availableParts[theme].body[Math.floor(rng() * availableParts[theme].body.length)],
+            eyes : availableParts[theme].eyes[Math.floor(rng() * availableParts[theme].eyes.length)],
+            mouth: availableParts[theme].mouth[Math.floor(rng() * availableParts[theme].mouth.length)]
         };
 
         // Create avatar.
@@ -30,9 +27,9 @@ var Canvas = require('canvas')
 
         // Choose a random color
         var randomColor = 'rgb(' +
-            (Math.floor(MonsterId.random() * 200) + 55) + ',' +
-            (Math.floor(MonsterId.random() * 200) + 55) + ',' +
-            (Math.floor(MonsterId.random() * 200) + 55)
+            (Math.floor(rng() * 200) + 55) + ',' +
+            (Math.floor(rng() * 200) + 55) + ',' +
+            (Math.floor(rng() * 200) + 55)
         +')';
         avatar.fillStyle   = randomColor;
         avatar.strokeStyle = randomColor;
