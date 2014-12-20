@@ -1,17 +1,34 @@
+"use strict";
+
 var restify = require('restify');
-var monster = require('./monsterid.js')
+var monster = require('./monsterid.js');
 
 /*
- * TODO: pass sizes, fix random seed, bit more docs, run through checker
- *       get a decent workflow (need to rework Dockerfile)
+ * TODO: bit more docs, run through checker
+ *       figure out debug and live-reloading
  *       tests (pretty easy, check get same binary for same string, check
  *       short strings, invalid URLs, sizes)
  */
+var DEFAULT_SIZE = 20;
 function respond(req, res, next) {
 
-  imgStr = monster.getAvatar("test-string", 200, 200)
+  var width = DEFAULT_SIZE;
+  var height = DEFAULT_SIZE;
+
+  if (req.params.size) {
+      width = req.params.size;
+      height = req.params.size;
+  }
+  if (req.params.width) {
+      width = req.params.width;
+  }
+  if (req.params.height) {
+      height = req.params.height;
+  }
+
+  var img = monster.getAvatar(req.params.name, width, height);
   res.setHeader('Content-Type', 'image/png');
-  res.send(imgStr);
+  res.send(img);
   next();
 }
 
@@ -27,6 +44,7 @@ var server = restify.createServer({
     }
 });
 
+server.use(restify.queryParser());
 server.get('/monster/:name', respond);
 
 server.listen(8080, function() {

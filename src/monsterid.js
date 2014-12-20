@@ -1,52 +1,47 @@
-var seedrandom = require('seedrandom')
-var Canvas = require('canvas')
-    exports.getAvatar = function(seed, width, height, theme) {
-        //check width and height
-        theme = typeof theme !== 'undefined' ? theme : 'default';
+"use strict";
 
-        // Seed RNG. 
-        // WARNING: Hashing is left to caller
-        var rng = seedrandom(seed);
+var seedrandom = require('seedrandom');
+var Canvas = require('canvas');
 
-        var widthHeight = Math.min(width, height);
-        widthHeight = Math.max(widthHeight, 12);
-        var canvas = new Canvas(widthHeight, widthHeight)
+exports.getAvatar = function(seed, width, height, theme) {
+    //check width and height
+    theme = typeof theme !== 'undefined' ? theme : 'default';
 
-        // Avatar random parts.
-        var parts = {
-            legs : availableParts[theme].legs[Math.floor(rng() * availableParts[theme].legs.length)],
-            hair : availableParts[theme].hair[Math.floor(rng() * availableParts[theme].hair.length)],
-            arms : availableParts[theme].arms[Math.floor(rng() * availableParts[theme].arms.length)],
-            body : availableParts[theme].body[Math.floor(rng() * availableParts[theme].body.length)],
-            eyes : availableParts[theme].eyes[Math.floor(rng() * availableParts[theme].eyes.length)],
-            mouth: availableParts[theme].mouth[Math.floor(rng() * availableParts[theme].mouth.length)]
-        };
+    // Seed RNG. 
+    // WARNING: Hashing is left to caller
+    var rng = seedrandom(seed);
 
-        // Create avatar.
-        var avatar = canvas.getContext('2d');
+    var widthHeight = Math.max(width, height);
+    widthHeight = Math.max(widthHeight, 12);
+    var canvas = new Canvas(widthHeight, widthHeight);
 
-        // Choose a random color
-        var randomColor = 'rgb(' +
-            (Math.floor(rng() * 200) + 55) + ',' +
-            (Math.floor(rng() * 200) + 55) + ',' +
-            (Math.floor(rng() * 200) + 55)
-        +')';
-        avatar.fillStyle   = randomColor;
-        avatar.strokeStyle = randomColor;
-        avatar.lineWidth   = 1;
+    // Avatar random parts.
+    var parts = {
+        legs : availableParts[theme].legs[Math.floor(rng() * availableParts[theme].legs.length)],
+        hair : availableParts[theme].hair[Math.floor(rng() * availableParts[theme].hair.length)],
+        arms : availableParts[theme].arms[Math.floor(rng() * availableParts[theme].arms.length)],
+        body : availableParts[theme].body[Math.floor(rng() * availableParts[theme].body.length)],
+        eyes : availableParts[theme].eyes[Math.floor(rng() * availableParts[theme].eyes.length)],
+        mouth: availableParts[theme].mouth[Math.floor(rng() * availableParts[theme].mouth.length)]
+    };
 
-        // Fill avatar with random parts.
-        for (var iPart in parts) {
-            var part = parts[iPart];
-            drawPart(part, avatar);
-        }
-        console.log("getting data");
-        //data = canvas.toDataURL("image/png");
-        console.log("got data");
-        //console.log(data);
-        data = canvas.toBuffer()
+    // Create avatar.
+    var avatar = canvas.getContext('2d');
 
-        return data;
+    // Choose a random color
+    function gencol() { return (Math.floor(rng() * 200) + 55); }
+    var randomColor = 'rgb(' + gencol() + ',' + gencol() + ',' + gencol() + ')';
+    avatar.fillStyle   = randomColor;
+    avatar.strokeStyle = randomColor;
+    avatar.lineWidth   = 1;
+
+    // Fill avatar with random parts.
+    for (var iPart in parts) {
+        var part = parts[iPart];
+        drawPart(part, avatar);
+    }
+
+    return canvas.toBuffer();
     };
 
     var drawPart = function(part, avatar) {
@@ -883,4 +878,4 @@ var Canvas = require('canvas')
                     ]
                 ]
         }
-    };
+};
