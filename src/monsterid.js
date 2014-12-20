@@ -1,21 +1,19 @@
 
-(function(MonsterId) {
-
-    "use strict";
-
-    MonsterId.getAvatar = function(string, imageElement, theme) {
+var md5m = require('./md5.js')
+var Canvas = require('canvas')
+    exports.getAvatar = function(string, width, height, theme) {
+        //check width and height
         theme = typeof theme !== 'undefined' ? theme : 'default';
-        var md5 = MonsterId.md5(string);
+        var md5 = md5m.md5(string);
         var seed = parseInt(md5.substr(0, 6), 16);
+        var MonsterId = Math;
 
         // Create seed.
-        MonsterId.seedrandom(seed);
+        //MonsterId.seedrandom(seed);
 
-        var widthHeight = Math.min(imageElement.offsetWidth, imageElement.offsetHeight);
+        var widthHeight = Math.min(width, height);
         widthHeight = Math.max(widthHeight, 12);
-        var canvas = document.createElement('canvas');
-        canvas.width = widthHeight;
-        canvas.height = widthHeight;
+        var canvas = new Canvas(widthHeight, widthHeight)
 
         // Avatar random parts.
         var parts = {
@@ -45,11 +43,13 @@
             var part = parts[iPart];
             drawPart(part, avatar);
         }
-        if(!imageElement) {
-            imageElement = document.createElement('img');
-        }
-        imageElement.src = canvas.toDataURL("image/png");
-        return imageElement;
+        console.log("getting data");
+        //data = canvas.toDataURL("image/png");
+        console.log("got data");
+        //console.log(data);
+        data = canvas.toBuffer()
+
+        return data;
     };
 
     var drawPart = function(part, avatar) {
@@ -887,4 +887,3 @@
                 ]
         }
     };
-}(window.MonsterId = window.MonsterId || {}));

@@ -9,7 +9,6 @@
  * Released under the BSD license
  * http://www.opensource.org/licenses/bsd-license
  */
-(function(monsterid) {
 	function md5cycle(x, k) {
 		var a = x[0], b = x[1], c = x[2], d = x[3];
 
@@ -178,5 +177,4 @@
 		}
 	}
 
-    monsterid.md5 = md5;
-})(window.MonsterId = window.MonsterId || {});
+    exports.md5 = md5;
