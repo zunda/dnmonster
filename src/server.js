@@ -8,6 +8,7 @@ var monster = require('./monsterid.js');
  *       figure out debug and live-reloading
  *       tests (pretty easy, check get same binary for same string, check
  *       short strings, invalid URLs, sizes)
+ *       ***NOT correctly 404ing currently***
  */
 var DEFAULT_SIZE = 20;
 function respond(req, res, next) {
